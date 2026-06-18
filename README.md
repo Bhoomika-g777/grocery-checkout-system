@@ -22,11 +22,11 @@ Ensure you have [Node.js](https://nodejs.org/) installed on your machine.
    cd backend
   Install the necessary dependencies:
 
-2. ```Bash
+2. Bash
 npm install
 Boot up the server in development mode:
 
-3. ```Bash
+3. Bash
 npm run dev
 The terminal should output: 🚀 Server running on port 5000
 
