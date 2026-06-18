@@ -64,7 +64,6 @@ function renderProducts(products) {
     }
 
     products.forEach(product => {
-        // Check if item is eligible for BOGO
         const hasBogo = BOGO_ITEMS.includes(product.id);
         const bogoBadge = hasBogo 
             ? `<span class="inline-block bg-red-100 text-red-700 text-[10px] font-bold px-2 py-0.5 rounded-full ml-1">Buy 1 Get 1 Free</span>` 
@@ -101,7 +100,29 @@ window.addToCart = function(id, name) {
     updateCartUI();
 };
 
-// 6. Render Cart state updates
+// ⭐ ADDED: 5b. Remove/Decrease Item from cart
+window.removeFromCart = function(id) {
+    const existing = cart.find(item => item.id === id);
+    if (existing) {
+        if (existing.quantity > 1) {
+            existing.quantity -= 1;
+        } else {
+            cart = cart.filter(item => item.id !== id);
+        }
+    }
+    updateCartUI();
+    // Hide old receipt since the cart totals changed
+    document.getElementById('receipt-box').classList.add('hidden');
+};
+
+// ⭐ ADDED: 5c. Clear entire cart instantly
+window.clearCart = function() {
+    cart = [];
+    updateCartUI();
+    document.getElementById('receipt-box').classList.add('hidden');
+};
+
+// 6. Render Cart state updates (UPDATED: Added interactive controls)
 function updateCartUI() {
     const container = document.getElementById('cart-items');
     const checkoutBtn = document.getElementById('checkout-btn');
@@ -113,10 +134,25 @@ function updateCartUI() {
     }
 
     checkoutBtn.disabled = false;
-    container.innerHTML = cart.map(item => `
+    
+    // Injects a "Clear All" action option at the top of the list item section
+    container.innerHTML = `
+        <div class="flex justify-end mb-2">
+            <button onclick="clearCart()" class="text-[11px] text-red-500 hover:text-red-700 hover:underline font-medium">
+                🗑️ Clear All Items
+            </button>
+        </div>
+    ` + cart.map(item => `
         <div class="flex justify-between items-center bg-gray-100 p-2 rounded text-sm my-1">
-            <span>${item.name}</span>
-            <span class="font-bold">x${item.quantity}</span>
+            <div class="flex flex-col">
+                <span class="font-medium text-gray-800">${item.name}</span>
+                <span class="text-xs text-gray-500 font-bold">x${item.quantity}</span>
+            </div>
+            <button 
+                onclick="removeFromCart(${item.id})" 
+                class="bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold px-2 py-1 rounded border border-red-200 transition">
+                Remove
+            </button>
         </div>
     `).join('');
 }
@@ -136,7 +172,7 @@ document.getElementById('checkout-btn').addEventListener('click', async () => {
     }
 });
 
-// 8. Render computed invoice with clear offer breakdown
+// 8. Render computed invoice with clear offer breakdown (UPDATED: Includes Payment Type)
 function displayReceipt(summary) {
     const receiptBox = document.getElementById('receipt-box');
     const itemsDiv = document.getElementById('receipt-items');
@@ -144,7 +180,6 @@ function displayReceipt(summary) {
 
     receiptBox.classList.remove('hidden');
 
-    // Show selected quantities along with specific BOGO alerts if triggered
     itemsDiv.innerHTML = cart.map(item => {
         const productInfo = allProducts.find(p => p.id === item.id);
         let bogoAlert = '';
@@ -172,12 +207,17 @@ function displayReceipt(summary) {
     const total = summary.total || 0;
     const taxableAmount = subtotal - discount;
 
+    // Checks dropdown element for payment type choice if it exists in your index.html layout
+    const paymentDropdown = document.getElementById('payment-method');
+    const paymentMethodValue = paymentDropdown ? paymentDropdown.value : 'Not Specified';
+
     summaryDiv.innerHTML = `
         <div class="flex justify-between text-gray-500 text-xs"><span>Subtotal Value:</span><span>$${subtotal.toFixed(2)}</span></div>
         <div class="flex justify-between text-red-600 font-semibold text-xs"><span>Total Offers Saved:</span><span>-$${discount.toFixed(2)}</span></div>
         <div class="flex justify-between border-t pt-1 text-gray-600 text-xs"><span>Taxable Total:</span><span>$${taxableAmount.toFixed(2)}</span></div>
         <div class="flex justify-between text-gray-500 text-xs"><span>Tax (18%):</span><span>+$${tax.toFixed(2)}</span></div>
         <div class="flex justify-between border-t-2 border-double pt-1.5 text-base font-bold text-gray-900"><span>Grand Total:</span><span>$${total.toFixed(2)}</span></div>
+        <div class="text-[11px] text-gray-400 mt-3 border-t pt-2 italic text-center">Transaction Method: ${paymentMethodValue}</div>
     `;
 }
 
