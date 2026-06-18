@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retail Grocery Checkout System</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100 font-sans min-h-screen p-6">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <div class="md:col-span-2 bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800 border-b pb-2">🛒 Product Catalog</h2>
+            <div id="category-filters" class="flex flex-wrap gap-2 mb-6">
+        </div>
+
+    <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        </div>
+</div>
+
+        <div class="space-y-6">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-bold mb-3 text-gray-800 border-b pb-2">📋 Your Cart</h2>
+                <div id="cart-items" class="space-y-2 max-h-48 overflow-y-auto mb-4 text-sm text-gray-600">
+                    <p class="text-gray-400 italic">Cart is empty.</p>
+                </div>
+                <button id="checkout-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-all disabled:opacity-50" disabled>
+                    Generate Final Bill
+                </button>
+            </div>
+
+            <div id="receipt-box" class="bg-white p-6 rounded-lg shadow-md hidden border-2 border-dashed border-gray-300">
+                <h2 class="text-xl font-bold text-center mb-4 text-gray-800">📄 RECEIPT</h2>
+                <div id="receipt-items" class="border-b pb-2 mb-2 text-sm space-y-1"></div>
+                <div id="receipt-summary" class="text-sm space-y-1.5 font-medium text-gray-700"></div>
+            </div>
+        </div>
+
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

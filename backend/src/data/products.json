@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Milk",
+    "category": "Dairy & Eggs",
+    "price": 4.99
+  },
+  {
+    "id": 2,
+    "name": "Eggs",
+    "category": "Dairy & Eggs",
+    "price": 3.49
+  },
+  {
+    "id": 3,
+    "name": "Bread",
+    "category": "Bakery",
+    "price": 2.99
+  },
+  {
+    "id": 4,
+    "name": "Coffee",
+    "category": "Beverages",
+    "price": 8.99
+  },
+  {
+    "id": 5,
+    "name": "Apple",
+    "category": "Fresh Produce",
+    "price": 1.25
+  },
+  {
+    "id": 6,
+    "name": "Detergent",
+    "category": "Household Essentials",
+    "price": 12.99
+  }
+]
